@@ -1,0 +1,62 @@
+<alfresco-config>
+	
+	<config evaluator="string-compare" condition="Languages">
+		<languages>
+			<language locale="ru_RU">Russian</language>
+		</languages>
+	</config>
+	
+	<!--  Отображение  бизнес процессов -->
+	
+	<!-- Подача директивы -->
+	<config evaluator="node-type" condition="ystu:start" replace="true">
+		<property-sheet>
+			 <!-- Разделитель -->
+      <separator name="sep1" display-label-id="general" component-generator="HeaderSeparatorGenerator" />
+      <!-- Описание процесса -->
+      <show-property name="bpm:workflowDescription" component-generator="TextAreaGenerator" />
+      <!-- Выбор начальника -->
+      <show-association name="bpm:assignee" />
+		</property-sheet>
+	</config>
+	
+	<!-- Ознакомление с директивой и передача на исполнение -->
+	<config evaluator="node-type" condition="ystu:inspection" replace="true">
+		<property-sheet>
+			 <!-- Разделитель -->
+      <separator name="sep1" display-label-id="general" component-generator="HeaderSeparatorGenerator" />
+      <!-- Описание процесса -->
+      <show-property name="bpm:workflowDescription" component-generator="TextAreaGenerator" />
+      <!-- Комментарий -->
+      <show-property name="bpm:comment" component-generator="TextAreaGenerator" />
+      <!-- Выбор исполнителя -->
+      <show-association name="ystu:performer" />
+		</property-sheet>
+	</config>
+	
+	<!-- Исполнение поручения -->
+	<config evaluator="node-type" condition="ystu:perform" replace="true">
+		<property-sheet>
+			 <!-- Разделитель -->
+      <separator name="sep1" display-label-id="general" component-generator="HeaderSeparatorGenerator" />
+      <!-- Описание процесса -->
+      <show-property name="bpm:workflowDescription" component-generator="TextAreaGenerator" />
+      <!-- Комментарий -->
+      <show-property name="bpm:comment" component-generator="TextAreaGenerator" />
+		</property-sheet>
+	</config>
+
+	<!-- Проверка исполнения -->
+	<config evaluator="node-type" condition="ystu:approve" replace="true">
+		<property-sheet>
+			 <!-- Разделитель -->
+      <separator name="sep1" display-label-id="general" component-generator="HeaderSeparatorGenerator" />
+      <!-- Описание процесса -->
+      <show-property name="bpm:workflowDescription" component-generator="TextAreaGenerator" />
+      <!-- Комментарий -->
+      <show-property name="bpm:comment" component-generator="TextAreaGenerator" />
+      <show-property name="ystu:appOutcome" />
+		</property-sheet>
+	</config>
+	
+</alfresco-config>

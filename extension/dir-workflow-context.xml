@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!-- Описание моделей и процессов для загрузки -->
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+
+<beans>
+  
+  <!-- Регистрируем ресурсы -->
+  <bean id="ystu.workflowBootstrap" parent="workflowDeployer">
+    <property name="workflowDefinitions">
+      <list>
+        <props>
+          <!-- Тип процесса -->
+          <prop key="engineId">activiti</prop>
+          <!-- Путь -->
+          <prop key="location">alfresco/extension/workflows/DirectiveProcess.xml</prop>
+          <!-- MIME -->
+          <prop key="mimetype">text/xml</prop>
+          <!-- Загружать каждый раз -->
+          <prop key="redeploy">true</prop>
+        </props>
+      </list>
+    </property>
+        
+    <!-- Локализация -->
+    <property name="labels">
+      <list>
+        <value>alfresco.extension.messages.dirWorkflow</value>
+      </list>
+    </property>
+    
+    <!-- Список моделей для загрузки -->
+    <property name="models">
+        <list>
+            <value>alfresco/extension/model/DirectiveWorkflowModel.xml</value>
+        </list>
+    </property>
+    
+  </bean>
+    
+</beans>
+<!-- Конец описания -->

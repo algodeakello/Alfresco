@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- Объявление необходимых пространств имен -->
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn"
+	xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+	xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema"
+	expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+	
+	<!-- Начало описания процесса -->
+	<process id="PerformDirective" name="Обработка документа">
+	
+		<!-- Начальный узел процесса -->
+		<startEvent id="start"	activiti:formKey="ystu:start" />
+		
+		<!-- Переход от старта к задаче ознакомления с документом -->
+		<sequenceFlow id='flow1' sourceRef='start' targetRef='inspection' />
+		
+		<!-- Ознакомление с директивой и передача на регистрацию -->
+		<userTask id="inspection" name="Ознакомиться с документом и передать на регистрацию."	
+			activiti:formKey="ystu:inspection" >
+			<extensionElements>
+				<!-- Скрипт при создании задачи -->
+				<!-- Устанавливаем срок исполнения и приоритет, если те не указаны -->
+				<!-- Запоминаем начальника -->
+				<activiti:taskListener event="create" 
+					class="org.alfresco.repo.workflow.activiti.tasklistener.ScriptTaskListener">
+					<activiti:field name="script">
+						<activiti:string>
+							if (typeof bpm_workflowDueDate != 'undefined') task.dueDate = bpm_workflowDueDate
+							if (typeof bpm_workflowPriority != 'undefined') task.priority = bpm_workflowPriority;
+							execution.setVariable('manager', bpm_assignee.properties.userName);
+						</activiti:string>
+					</activiti:field>
+				</activiti:taskListener>
+				<!-- Скрипт при закрытии задачи -->
+				<!-- Запоминаем исполнителя -->
+				<activiti:taskListener event="complete" 
+					class="org.alfresco.repo.workflow.activiti.tasklistener.ScriptTaskListener">
+					<activiti:field name="script">
+						<activiti:string>
+							var performer = task.getVariable('ystu_performer');
+							execution.setVariable('performer', performer.properties.userName);
+						</activiti:string>
+					</activiti:field>
+				</activiti:taskListener>
+			</extensionElements>
+			<!-- Задача для начальника -->
+			<humanPerformer>
+				<resourceAssignmentExpression>
+					<formalExpression>${bpm_assignee.properties.userName}</formalExpression>
+				</resourceAssignmentExpression>
+			</humanPerformer>
+		</userTask>
+		
+		<!-- Переход от ознакомления с документом к исполнениию -->
+		<sequenceFlow id='flow2' sourceRef='inspection' targetRef='perform' />
+
+		<!--Исполнение поручения -->
+		<!-- Второй способ обозначить владельца задачи - через activiti:assignee -->
+		<!-- Задача для исполнителя -->
+		<userTask id="perform" name="Исполнение поручения."	activiti:formKey="ystu:perform" 
+			activiti:assignee="${performer}" >
+			<extensionElements>
+				<!-- Скрипт при создании задачи -->
+				<!-- Устанавливаем срок исполнения и приоритет, если те не указаны -->
+				<activiti:taskListener event="create" 
+					class="org.alfresco.repo.workflow.activiti.tasklistener.ScriptTaskListener">
+					<activiti:field name="script">
+						<activiti:string>
+							if (typeof bpm_workflowDueDate != 'undefined') task.dueDate = bpm_workflowDueDate
+							if (typeof bpm_workflowPriority != 'undefined') task.priority = bpm_workflowPriority;
+						</activiti:string>
+					</activiti:field>
+				</activiti:taskListener>
+			</extensionElements>
+		</userTask>
+		
+		<!-- Переход от исполнениия к проверке исполнения -->
+		<sequenceFlow id='flow3' sourceRef='perform' targetRef='approve' />
+
+		<!-- Проверка исполнения -->
+		<!-- Задача для начальника -->
+		<userTask id="approve" name="Проверить исполнение поручения."	activiti:formKey="ystu:approve"
+			activiti:assignee="${manager}" >
+			<extensionElements>
+				<!-- Скрипт при создании задачи -->
+				<!-- Устанавливаем срок исполнения и приоритет, если те не указаны -->
+				<activiti:taskListener event="create" 
+					class="org.alfresco.repo.workflow.activiti.tasklistener.ScriptTaskListener">
+					<activiti:field name="script">
+						<activiti:string>
+							if (typeof bpm_workflowDueDate != 'undefined') task.dueDate = bpm_workflowDueDate
+							if (typeof bpm_workflowPriority != 'undefined') task.priority = bpm_workflowPriority;
+						</activiti:string>
+					</activiti:field>
+				</activiti:taskListener>
+				<!-- Скрипт при закрытии задачи -->
+				<!-- Устанавливаем результат -->
+				<activiti:taskListener event="complete" 
+					class="org.alfresco.repo.workflow.activiti.tasklistener.ScriptTaskListener">
+					<activiti:field name="script">
+						<activiti:string>
+							execution.setVariable('ystu_appOutcome', task.getVariable('ystu_appOutcome'));
+						</activiti:string>
+					</activiti:field>
+				</activiti:taskListener>
+			</extensionElements>
+		</userTask>
+		
+		<!-- Переход от проверки исполнения к развилке -->
+		<sequenceFlow id='flow4' sourceRef='approve' targetRef='decision' />
+		
+		<!-- Развилка: вернуться ли к исполнению или же окончить процесс -->
+		<exclusiveGateway id="decision" name="Decision" /> 
+		
+		<!-- Исполнение не утверждено: вернуться к задаче исполнения -->
+		<sequenceFlow id='flow5' sourceRef='decision' targetRef='perform' >
+			<conditionExpression xsi:type="tFormalExpression">${ystu_appOutcome == 'reject'}</conditionExpression>
+		</sequenceFlow>
+		
+		<!-- Исполнение утверждено: окончить процесс -->
+		<sequenceFlow id='flow6' sourceRef='decision' targetRef='end' />
+		
+		<!-- Конец процесса -->
+		<endEvent id="end" />
+
+	</process>
+</definitions>

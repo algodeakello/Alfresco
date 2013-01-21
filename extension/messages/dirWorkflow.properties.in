@@ -1,0 +1,12 @@
+PerformDirective.workflow.title=Обработка документов
+PerformDirective.workflow.description=Ознакомиться с документом и зарегистрировать его
+
+listconstraint.dir_propAppOutcome.approve=Утвердить исполнение
+listconstraint.dir_propAppOutcome.reject=Послать на доработку
+
+PerformDirective.node.inspection.transition.title=Направить на регистрацию
+PerformDirective.node.inspection.transition.description=Направить на регистрацию
+
+PerformDirective.node.perform.transition.title=Передать на утверждение
+PerformDirective.node.perform.transition.description=Передать на утверждение
+

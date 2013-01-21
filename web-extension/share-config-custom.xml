@@ -1,0 +1,209 @@
+<alfresco-config>
+   
+   <!-- Repository Library config section -->
+   <config evaluator="string-compare" condition="RepositoryLibrary" replace="true">
+      <!--
+         Whether the link to the Repository Library appears in the header component or not.
+      -->
+      <visible>true</visible>
+   </config>
+
+   <config evaluator="string-compare" condition="Remote">
+      <remote>
+         <endpoint>
+            <id>alfresco-noauth</id>
+            <name>Alfresco - unauthenticated access</name>
+            <description>Access to Alfresco Repository WebScripts that do not require authentication</description>
+            <connector-id>alfresco</connector-id>
+            <endpoint-url>http://localhost:8080/alfresco/s</endpoint-url>
+            <identity>none</identity>
+         </endpoint>
+
+         <endpoint>
+            <id>alfresco</id>
+            <name>Alfresco - user access</name>
+            <description>Access to Alfresco Repository WebScripts that require user authentication</description>
+            <connector-id>alfresco</connector-id>
+            <endpoint-url>http://localhost:8080/alfresco/s</endpoint-url>
+            <identity>user</identity>
+         </endpoint>
+
+         <endpoint>
+            <id>alfresco-feed</id>
+            <name>Alfresco Feed</name>
+            <description>Alfresco Feed - supports basic HTTP authentication via the EndPointProxyServlet</description>
+            <connector-id>http</connector-id>
+            <endpoint-url>http://localhost:8080/alfresco/s</endpoint-url>
+            <basic-auth>true</basic-auth>
+            <identity>user</identity>
+         </endpoint>
+         
+         <endpoint>
+            <id>activiti-admin</id>
+            <name>Activiti Admin UI - user access</name>
+            <description>Access to Activiti Admin UI, that requires user authentication</description>
+            <connector-id>activiti-admin-connector</connector-id>
+            <endpoint-url>http://localhost:8080/alfresco/activiti-admin</endpoint-url>
+            <identity>user</identity>
+         </endpoint>
+      </remote>
+   </config>
+   
+   	<!-- ???? ????????? ????? ???????? ????? ??????? -->
+	<config replace="true">
+		<flags>
+			<client-debug>false</client-debug>
+			<client-debug-autologging>false</client-debug-autologging>
+		</flags>
+	</config>
+	
+	<!-- ??????????? ?????????? ??? ????????? ??????-???????? -->
+	<config evaluator="string-compare" condition="activiti$PerformDirective">
+		<forms>
+			<form>
+				<!-- ?????? ??????? ????? -->
+				<field-visibility>
+					<show id="bpm:workflowDescription"/>
+					<show id="bpm:assignee"/>
+					<show id="packageItems" />
+				</field-visibility>
+				<appearance>
+					<!-- ????? -->
+					<set id="" appearance="title" label-id="workflow.set.general" />
+					<set id="assignee" appearance="title" label-id="doc_assignee" />					
+					<set id="items" appearance="title" label-id="doc_items" />
+					<!-- ??????????? ????? -->
+					<field id="bpm:workflowDescription" label-id="doc_description">
+						<control template="/org/alfresco/components/form/controls/textarea.ftl">
+							<control-param name="style">width: 95%</control-param>
+						</control>
+					</field>
+					<field id="bpm:assignee" label-id="doc_assign_to" set="assignee" />
+					<field id="packageItems" set="items" label-id="doc_pitems" />
+				</appearance>
+			</form>
+		</forms>
+	</config>
+	
+	<!-- ????????? ???? ???????? -->
+	<config evaluator="task-type" condition="ystu:start">
+		<forms>
+			<form>
+				<!-- ?????? ??????? ????? -->
+				<field-visibility>
+					<show id="bpm:workflowDescription"/>
+					<show id="bpm:assignee"/>
+					<show id="packageItems" />
+				</field-visibility>
+				<appearance>
+					<!-- ????? -->
+					<set id="" appearance="title" label-id="workflow.set.general" />
+					<set id="assignee" appearance="title" label-id="doc_assignee" />					
+					<set id="items" appearance="title" label-id="doc_items" />
+					<!-- ??????????? ????? -->
+					<field id="bpm:workflowDescription" label-id="doc_description">
+						<control template="/org/alfresco/components/form/controls/textarea.ftl">
+							<control-param name="style">width: 95%</control-param>
+						</control>
+					</field>
+					<field id="bpm:assignee" label-id="doc_assign_to" set="assignee" />
+					<field id="packageItems" set="items" label-id="doc_pitems" />
+				</appearance>
+			</form>
+		</forms>
+	</config>
+	
+	<!-- ???????????? ? ?????????? ? ???????? ?? ?????????? -->
+	<config evaluator="task-type" condition="ystu:inspection">
+		<forms>
+			<form>
+				<!-- ?????? ??????? ????? -->
+				<field-visibility>
+					<show id="bpm:workflowDescription"/>
+					<show id="bpm:comment"/>
+					<show id="ystu:performer"/>
+					<show id="transitions" />
+					<show id="packageItems" />
+				</field-visibility>
+				<appearance>
+					<!-- ????? -->
+					<set id="" appearance="title" label-id="workflow.set.general" />
+					<set id="assignee" appearance="title" label-id="doc_assignee" />
+					<set id="trans" appearance="" />
+					<set id="items" appearance="title" label-id="doc_items" />
+					<!-- ??????????? ????? -->
+					<field id="bpm:workflowDescription" label-id="doc_description">
+						<control template="/org/alfresco/components/form/controls/textarea.ftl">
+							<control-param name="style">width: 95%</control-param>
+						</control>
+					</field>
+					<field id="bpm:comment" label-id="doc_comment" />
+					<field id="ystu:performer" label-id="doc_performer" set="assignee" />
+					<field id="transitions" set="trans" />
+					<field id="packageItems" set="items" label-id="doc_pitems" />
+				</appearance>
+			</form>
+		</forms>
+	</config>
+
+	<!--?????????? ????????? -->
+	<config evaluator="task-type" condition="ystu:perform">
+		<forms>
+			<form>
+				<!-- ?????? ??????? ????? -->
+				<field-visibility>
+					<show id="bpm:workflowDescription"/>
+					<show id="bpm:comment"/>
+					<show id="transitions" />
+					<show id="packageItems" />
+				</field-visibility>
+				<appearance>
+					<!-- ????? -->
+					<set id="" appearance="title" label-id="workflow.set.general" />
+					<set id="trans" appearance="" />
+					<set id="items" appearance="title" label-id="doc_items" />
+					<!-- ??????????? ????? -->
+					<field id="bpm:workflowDescription" label-id="doc_description">
+						<control template="/org/alfresco/components/form/controls/textarea.ftl">
+							<control-param name="style">width: 95%</control-param>
+						</control>
+					</field>
+					<field id="bpm:comment" label-id="doc_comment" />
+					<field id="transitions" set="trans" />
+					<field id="packageItems" set="items" label-id="doc_pitems" />
+				</appearance>
+			</form>
+		</forms>
+	</config>
+	
+	<!--???????? ?????????? -->
+	<config evaluator="task-type" condition="ystu:approve">
+		<forms>
+			<form>
+				<!-- ?????? ??????? ????? -->
+				<field-visibility>
+					<show id="bpm:workflowDescription"/>
+					<show id="bpm:comment"/>
+					<show id="ystu:appOutcome" />
+					<show id="packageItems" />
+				</field-visibility>
+				<appearance>
+					<!-- ????? -->
+					<set id="" appearance="title" label-id="workflow.set.general" />
+					<set id="items" appearance="title" label-id="doc_items" />
+					<!-- ??????????? ????? -->
+					<field id="bpm:workflowDescription" label-id="doc_description">
+						<control template="/org/alfresco/components/form/controls/textarea.ftl">
+							<control-param name="style">width: 95%</control-param>
+						</control>
+					</field>
+					<field id="bpm:comment" label-id="doc_comment" />
+					<field id="ystu:appOutcome" label-id="workflow.field.outcome" >
+						<control template="/org/alfresco/components/form/controls/workflow/activiti-transitions.ftl" />
+					</field>
+					<field id="packageItems" set="items" label-id="doc_pitems" />
+				</appearance>
+			</form>
+		</forms>
+	</config>
+</alfresco-config>

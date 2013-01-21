@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Описание модели бизнес-процесса -->
+<model name="ystu:workflowmodel" xmlns="http://www.alfresco.org/model/dictionary/1.0">
+
+	<!-- Импорт необходимых описаний -->
+	<imports>
+		<import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d" />
+		<import uri="http://www.alfresco.org/model/bpm/1.0" prefix="bpm" />
+		<import uri="http://www.alfresco.org/model/content/1.0" prefix="cm"/>
+	</imports>
+	
+	<!-- Описываем пространство имен для нашего процесса -->
+	<namespaces>
+		<namespace uri="http://www.somecompany.ru/model/workflow/1.0" prefix="ystu" />
+	</namespaces>
+	
+	<types>
+		<!-- Подача директивы -->
+		<type name="ystu:start">
+			<!-- Наследуем от bpm:startTask -->
+			<parent>bpm:startTask</parent>
+			<!-- Указываем обязательные аспекты -->
+			<mandatory-aspects>
+				<!-- Начальник подразделения -->
+				<aspect>bpm:assignee</aspect>
+			</mandatory-aspects>
+		</type>
+	
+		<!-- Ознакомление с директивой и передача на исполнение -->
+		<type name="ystu:inspection">
+			<!-- Наследуем от bpm:workflowTask -->
+			<parent>bpm:workflowTask</parent>
+			
+			<!-- Доступ к документам пакета -->
+			<overrides>
+				<!-- Документ может быть добавлен -->
+				<property name="bpm:packageActionGroup">
+					<default>add_package_item_actions</default>
+				</property>
+				<!-- Документ может быть отредактирован -->
+				<property name="bpm:packageItemActionGroup">
+					<default>edit_package_item_actions</default>
+				</property>
+			</overrides>
+				<!-- Указываем обязательные аспекты -->
+				<mandatory-aspects>
+					<!-- Исполнитель -->
+					<aspect>ystu:performer</aspect>
+				</mandatory-aspects>
+		</type>
+		
+		<!-- Исполнение поручения -->
+		<type name="ystu:perform">
+			<parent>bpm:workflowTask</parent>
+			<!-- Доступ к документам пакета -->
+			<overrides>
+				<!-- Документ может быть добавлен -->
+				<property name="bpm:packageActionGroup">
+					<default>add_package_item_actions</default>
+				</property>
+				<!-- Документ может быть отредактирован -->
+				<property name="bpm:packageItemActionGroup">
+					<default>edit_package_item_actions</default>
+				</property>
+			</overrides>
+		</type>
+		
+		<!-- Проверка исполнения -->
+		<type name="ystu:approve">
+			<!-- Наследуем от bpm:activitiOutcomeTask -->
+			<!-- Новый объект появился с введение activiti в альфреско -->
+			<parent>bpm:activitiOutcomeTask</parent>
+			<!-- Свойства -->
+			<properties>
+				<!-- Утвердить исполнение или же отправить на доработку -->
+				<property name="ystu:appOutcome">
+					<type>d:text</type>
+					<default>reject</default>
+					<constraints>
+						<constraint name="ystu:propAppOutcome" type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<!-- Утвердить -->
+									<value>approve</value>
+									<!-- Отправить на доработку -->
+									<value>reject</value>
+								</list>
+							</parameter>
+							<parameter name="caseSensitive">
+								<value>true</value>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+			</properties>
+			<!-- Доступ к документам пакета -->
+			<overrides>
+				<!-- Документ может быть добавлен -->
+				<property name="bpm:packageActionGroup">
+					<default>add_package_item_actions</default>
+				</property>
+				<!-- Документ может быть отредактирован -->
+				<property name="bpm:packageItemActionGroup">
+					<default>edit_package_item_actions</default>
+				</property>
+			</overrides>
+		</type>
+	</types>
+	
+	<aspects>
+		<aspect name="ystu:performer">
+			<associations>
+				<association name="ystu:performer">
+					<source>
+						<mandatory>true</mandatory>
+						<many>false</many>
+					</source>
+					<target>
+						<class>cm:person</class>
+						<mandatory>true</mandatory>
+						<many>false</many>
+					</target>
+				</association>
+			</associations>
+		</aspect>
+	</aspects>
+</model>
