@@ -49,7 +49,7 @@
       </remote>
    </config>
    
-   	<!-- ???? ????????? ????? ???????? ????? ??????? -->
+   	<!-- Set debug mode -->
 	<config replace="true">
 		<flags>
 			<client-debug>false</client-debug>
@@ -57,22 +57,23 @@
 		</flags>
 	</config>
 	
-	<!-- ??????????? ?????????? ??? ????????? ??????-???????? -->
+	<!-- Directive Process configuration-->
+	<!-- show business process information -->
 	<config evaluator="string-compare" condition="activiti$PerformDirective">
 		<forms>
 			<form>
-				<!-- ?????? ??????? ????? -->
+				<!-- list visible field -->
 				<field-visibility>
 					<show id="bpm:workflowDescription"/>
 					<show id="bpm:assignee"/>
 					<show id="packageItems" />
 				</field-visibility>
 				<appearance>
-					<!-- ????? -->
+					<!-- blocks -->
 					<set id="" appearance="title" label-id="workflow.set.general" />
 					<set id="assignee" appearance="title" label-id="doc_assignee" />					
 					<set id="items" appearance="title" label-id="doc_items" />
-					<!-- ??????????? ????? -->
+					<!-- field visualizations -->
 					<field id="bpm:workflowDescription" label-id="doc_description">
 						<control template="/org/alfresco/components/form/controls/textarea.ftl">
 							<control-param name="style">width: 95%</control-param>
@@ -85,22 +86,22 @@
 		</forms>
 	</config>
 	
-	<!-- ????????? ???? ???????? -->
+	<!-- process's start node -->
 	<config evaluator="task-type" condition="ystu:start">
 		<forms>
 			<form>
-				<!-- ?????? ??????? ????? -->
+				<!-- list visible field -->
 				<field-visibility>
 					<show id="bpm:workflowDescription"/>
 					<show id="bpm:assignee"/>
 					<show id="packageItems" />
 				</field-visibility>
 				<appearance>
-					<!-- ????? -->
+					<!-- blocks -->
 					<set id="" appearance="title" label-id="workflow.set.general" />
 					<set id="assignee" appearance="title" label-id="doc_assignee" />					
 					<set id="items" appearance="title" label-id="doc_items" />
-					<!-- ??????????? ????? -->
+					<!-- field visualizations -->
 					<field id="bpm:workflowDescription" label-id="doc_description">
 						<control template="/org/alfresco/components/form/controls/textarea.ftl">
 							<control-param name="style">width: 95%</control-param>
@@ -113,11 +114,11 @@
 		</forms>
 	</config>
 	
-	<!-- ???????????? ? ?????????? ? ???????? ?? ?????????? -->
+	<!-- show document and send it for perfomance -->
 	<config evaluator="task-type" condition="ystu:inspection">
 		<forms>
 			<form>
-				<!-- ?????? ??????? ????? -->
+				<!-- list visible field -->
 				<field-visibility>
 					<show id="bpm:workflowDescription"/>
 					<show id="bpm:comment"/>
@@ -126,12 +127,12 @@
 					<show id="packageItems" />
 				</field-visibility>
 				<appearance>
-					<!-- ????? -->
+					<!-- blocks -->
 					<set id="" appearance="title" label-id="workflow.set.general" />
 					<set id="assignee" appearance="title" label-id="doc_assignee" />
 					<set id="trans" appearance="" />
 					<set id="items" appearance="title" label-id="doc_items" />
-					<!-- ??????????? ????? -->
+					<!-- field visualizations -->
 					<field id="bpm:workflowDescription" label-id="doc_description">
 						<control template="/org/alfresco/components/form/controls/textarea.ftl">
 							<control-param name="style">width: 95%</control-param>
@@ -146,11 +147,11 @@
 		</forms>
 	</config>
 
-	<!--?????????? ????????? -->
+	<!-- perform document -->
 	<config evaluator="task-type" condition="ystu:perform">
 		<forms>
 			<form>
-				<!-- ?????? ??????? ????? -->
+				<!-- list visible field -->
 				<field-visibility>
 					<show id="bpm:workflowDescription"/>
 					<show id="bpm:comment"/>
@@ -158,11 +159,11 @@
 					<show id="packageItems" />
 				</field-visibility>
 				<appearance>
-					<!-- ????? -->
+					<!-- blocks -->
 					<set id="" appearance="title" label-id="workflow.set.general" />
 					<set id="trans" appearance="" />
 					<set id="items" appearance="title" label-id="doc_items" />
-					<!-- ??????????? ????? -->
+					<!-- field visualizations -->
 					<field id="bpm:workflowDescription" label-id="doc_description">
 						<control template="/org/alfresco/components/form/controls/textarea.ftl">
 							<control-param name="style">width: 95%</control-param>
@@ -176,11 +177,11 @@
 		</forms>
 	</config>
 	
-	<!--???????? ?????????? -->
+	<!-- check perfomance -->
 	<config evaluator="task-type" condition="ystu:approve">
 		<forms>
 			<form>
-				<!-- ?????? ??????? ????? -->
+				<!-- list visible field -->
 				<field-visibility>
 					<show id="bpm:workflowDescription"/>
 					<show id="bpm:comment"/>
@@ -188,10 +189,10 @@
 					<show id="packageItems" />
 				</field-visibility>
 				<appearance>
-					<!-- ????? -->
+					<!-- blocks -->
 					<set id="" appearance="title" label-id="workflow.set.general" />
 					<set id="items" appearance="title" label-id="doc_items" />
-					<!-- ??????????? ????? -->
+					<!-- field visualizations -->
 					<field id="bpm:workflowDescription" label-id="doc_description">
 						<control template="/org/alfresco/components/form/controls/textarea.ftl">
 							<control-param name="style">width: 95%</control-param>
