@@ -17,8 +17,8 @@
 		<sequenceFlow id='flow1' sourceRef='start' targetRef='inspection' />
 		
 		<!-- Ознакомление с директивой и передача на регистрацию -->
-		<userTask id="inspection" name="Ознакомиться с документом и передать на регистрацию."	
-			activiti:formKey="ystu:inspection" >
+		<userTask id="inspection" name="Ознакомиться с документом и отправить на выполнение"	
+			activiti:formKey="ystu:inspection">
 			<extensionElements>
 				<!-- Скрипт при создании задачи -->
 				<!-- Устанавливаем срок исполнения и приоритет, если те не указаны -->
@@ -59,7 +59,7 @@
 		<!--Исполнение поручения -->
 		<!-- Второй способ обозначить владельца задачи - через activiti:assignee -->
 		<!-- Задача для исполнителя -->
-		<userTask id="perform" name="Исполнение поручения."	activiti:formKey="ystu:perform" 
+		<userTask id="perform" name="Исполнение поручения"	activiti:formKey="ystu:perform" 
 			activiti:assignee="${performer}" >
 			<extensionElements>
 				<!-- Скрипт при создании задачи -->
@@ -81,7 +81,7 @@
 
 		<!-- Проверка исполнения -->
 		<!-- Задача для начальника -->
-		<userTask id="approve" name="Проверить исполнение поручения."	activiti:formKey="ystu:approve"
+		<userTask id="approve" name="Проверить исполнение"	activiti:formKey="ystu:approve"
 			activiti:assignee="${manager}" >
 			<extensionElements>
 				<!-- Скрипт при создании задачи -->
