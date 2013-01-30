@@ -65,12 +65,14 @@
 				<!-- list visible field -->
 				<field-visibility>
 					<show id="bpm:workflowDescription"/>
+					<show id="bpm:sendEMailNotifications"/>
 					<show id="bpm:assignee"/>
 					<show id="packageItems" />
 				</field-visibility>
 				<appearance>
 					<!-- blocks -->
 					<set id="" appearance="title" label-id="workflow.set.general" />
+					<set id="notifications" label-id="send_notifications"/>
 					<set id="assignee" appearance="title" label-id="doc_assignee" />					
 					<set id="items" appearance="title" label-id="doc_items" />
 					<!-- field visualizations -->
@@ -78,6 +80,9 @@
 						<control template="/org/alfresco/components/form/controls/textarea.ftl">
 							<control-param name="style">width: 95%</control-param>
 						</control>
+					</field>
+					<field id="bpm:sendEMailNotifications" set="notifications"> 
+						<control template="/org/alfresco/components/form/controls/workflow/email-notification.ftl" /> 
 					</field>
 					<field id="bpm:assignee" label-id="doc_assign_to" set="assignee" />
 					<field id="packageItems" set="items" label-id="doc_pitems" />
@@ -93,12 +98,14 @@
 				<!-- list visible field -->
 				<field-visibility>
 					<show id="bpm:workflowDescription"/>
+					<show id="bpm:sendEMailNotifications"/>
 					<show id="bpm:assignee"/>
 					<show id="packageItems" />
 				</field-visibility>
 				<appearance>
 					<!-- blocks -->
 					<set id="" appearance="title" label-id="workflow.set.general" />
+					<set id="notifications" label-id="send_notifications"/>
 					<set id="assignee" appearance="title" label-id="doc_assignee" />					
 					<set id="items" appearance="title" label-id="doc_items" />
 					<!-- field visualizations -->
@@ -106,6 +113,9 @@
 						<control template="/org/alfresco/components/form/controls/textarea.ftl">
 							<control-param name="style">width: 95%</control-param>
 						</control>
+					</field>
+					<field id="bpm:sendEMailNotifications" set="notifications"> 
+						<control template="/org/alfresco/components/form/controls/workflow/email-notification.ftl" /> 
 					</field>
 					<field id="bpm:assignee" label-id="doc_assign_to" set="assignee" />
 					<field id="packageItems" set="items" label-id="doc_pitems" />
