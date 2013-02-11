@@ -125,6 +125,12 @@
 					<activiti:field name="script">
 						<activiti:string>
 							execution.setVariable('ystu_appOutcome', task.getVariable('ystu_appOutcome'));
+							var dest = companyhome.childByNamePath("Completed");
+							<![CDATA[
+								for (var i = 0; i < bpm_package.children.length; i++){
+									bpm_package.children[i].move(dest);
+								}
+							]]>
 						</activiti:string>
 					</activiti:field>
 				</activiti:taskListener>
