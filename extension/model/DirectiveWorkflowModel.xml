@@ -44,8 +44,8 @@
 			</overrides>
 				<!-- Указываем обязательные аспекты -->
 				<mandatory-aspects>
-					<!-- Исполнитель -->
-					<aspect>ystu:performer</aspect>
+					<!-- Исполнители -->
+					<aspect>ystu:performers</aspect>
 				</mandatory-aspects>
 		</type>
 		
@@ -108,9 +108,9 @@
 	</types>
 	
 	<aspects>
-		<aspect name="ystu:performer">
+		<aspect name="ystu:performers">
 			<associations>
-				<association name="ystu:performer">
+				<association name="ystu:performers">
 					<source>
 						<mandatory>true</mandatory>
 						<many>false</many>
@@ -118,7 +118,7 @@
 					<target>
 						<class>cm:person</class>
 						<mandatory>true</mandatory>
-						<many>false</many>
+						<many>true</many>
 					</target>
 				</association>
 			</associations>

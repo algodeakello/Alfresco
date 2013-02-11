@@ -39,8 +39,20 @@
 					class="org.alfresco.repo.workflow.activiti.tasklistener.ScriptTaskListener">
 					<activiti:field name="script">
 						<activiti:string>
-							var performer = task.getVariable('ystu_performer');
-							execution.setVariable('performer', performer.properties.userName);
+							logger.log("start my javascript");
+							var performers = task.getVariable('ystu_performers');
+							var performersString = "";
+							<![CDATA[
+								for (var i=0; i<performers.size(); i++ ) {
+									if (i>0) performersString += ","; 
+									performersString += performers.get(i).properties.userName;
+								}
+							]]>
+							var userList = converter.convert(performersString);
+							execution.setVariable('performUsers', userList);
+							logger.log(task.getVariable('performUsers'));
+							logger.log("performers count: "+userList.length);
+							logger.log("end my javascript");
 						</activiti:string>
 					</activiti:field>
 				</activiti:taskListener>
@@ -59,8 +71,9 @@
 		<!--Исполнение поручения -->
 		<!-- Второй способ обозначить владельца задачи - через activiti:assignee -->
 		<!-- Задача для исполнителя -->
-		<userTask id="perform" name="Исполнение поручения"	activiti:formKey="ystu:perform" 
-			activiti:assignee="${performer}" >
+		<!--activiti:candidateUsers="${performers}"--> 
+		<userTask id="perform" name="Исполнение поручения"	activiti:formKey="ystu:perform"
+			activiti:candidateUsers="${performUsers}">
 			<extensionElements>
 				<!-- Скрипт при создании задачи -->
 				<!-- Устанавливаем срок исполнения и приоритет, если те не указаны -->
@@ -74,6 +87,16 @@
 					</activiti:field>
 				</activiti:taskListener>
 			</extensionElements>
+			<!--<humanPerformer>
+                <resourceAssignmentExpression>
+                    <formalExpression>${reviewAssignee.properties.userName}</formalExpression>
+                </resourceAssignmentExpression>
+            </humanPerformer>
+			<multiInstanceLoopCharacteristics isSequential="false">
+           	   <loopDataInputRef>performUsers</loopDataInputRef>
+           	   <inputDataItem name="reviewAssignee"/>
+           	   <completionCondition>${wf_actualPercent >= wf_requiredApprovePercent} </completionCondition>
+            </multiInstanceLoopCharacteristics> -->
 		</userTask>
 		
 		<!-- Переход от исполнениия к проверке исполнения -->

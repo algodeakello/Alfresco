@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+<beans>
+ 
+    <bean id="converter" parent="baseJavaScriptExtension" class="ru.ystu.alfresco.process.StringConverter">
+        <property name="extensionName">
+            <value>converter</value>
+        </property>
+    </bean>
+</beans>

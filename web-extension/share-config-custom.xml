@@ -132,7 +132,7 @@
 				<field-visibility>
 					<show id="bpm:workflowDescription"/>
 					<show id="bpm:comment"/>
-					<show id="ystu:performer"/>
+					<show id="ystu:performers"/>
 					<show id="transitions" />
 					<show id="packageItems" />
 				</field-visibility>
@@ -149,7 +149,7 @@
 						</control>
 					</field>
 					<field id="bpm:comment" label-id="doc_comment" />
-					<field id="ystu:performer" label-id="doc_performer" set="assignee" />
+					<field id="ystu:performers" label-id="doc_performer" set="assignee" />
 					<field id="transitions" set="trans" />
 					<field id="packageItems" set="items" label-id="doc_pitems" />
 				</appearance>
