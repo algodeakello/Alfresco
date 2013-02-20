@@ -71,9 +71,8 @@
 		<!--Исполнение поручения -->
 		<!-- Второй способ обозначить владельца задачи - через activiti:assignee -->
 		<!-- Задача для исполнителя -->
-		<!--activiti:candidateUsers="${performers}"--> 
-		<userTask id="perform" name="Исполнение поручения"	activiti:formKey="ystu:perform"
-			activiti:candidateUsers="${performUsers}">
+		<!--activiti:candidateUsers="${performUsers}"--> 
+		<userTask id="perform" name="Исполнение поручения"	activiti:formKey="ystu:perform">
 			<extensionElements>
 				<!-- Скрипт при создании задачи -->
 				<!-- Устанавливаем срок исполнения и приоритет, если те не указаны -->
@@ -87,16 +86,16 @@
 					</activiti:field>
 				</activiti:taskListener>
 			</extensionElements>
-			<!--<humanPerformer>
+			<humanPerformer>
                 <resourceAssignmentExpression>
-                    <formalExpression>${reviewAssignee.properties.userName}</formalExpression>
+                    <formalExpression>${reviewAssignee}</formalExpression>
                 </resourceAssignmentExpression>
             </humanPerformer>
 			<multiInstanceLoopCharacteristics isSequential="false">
            	   <loopDataInputRef>performUsers</loopDataInputRef>
            	   <inputDataItem name="reviewAssignee"/>
            	   <completionCondition>${wf_actualPercent >= wf_requiredApprovePercent} </completionCondition>
-            </multiInstanceLoopCharacteristics> -->
+            </multiInstanceLoopCharacteristics>
 		</userTask>
 		
 		<!-- Переход от исполнениия к проверке исполнения -->
