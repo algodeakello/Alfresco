@@ -51,8 +51,13 @@
 							var userList = converter.convert(performersString);
 							execution.setVariable('performUsers', userList);
 							logger.log(task.getVariable('performUsers'));
-							logger.log("performers count: "+userList.length);
+							logger.log("performers count: "+userList.size());
 							logger.log("end my javascript");
+							
+							execution.setVariable('wf_approveCount', 0);   
+							execution.setVariable('wf_reviewerCount', userList.size());
+							execution.setVariable('wf_actualPercent', 0);	
+							execution.setVariable('wf_requiredPercent', 100);
 						</activiti:string>
 					</activiti:field>
 				</activiti:taskListener>
@@ -82,6 +87,20 @@
 						<activiti:string>
 							if (typeof bpm_workflowDueDate != 'undefined') task.dueDate = bpm_workflowDueDate
 							if (typeof bpm_workflowPriority != 'undefined') task.priority = bpm_workflowPriority;
+							</activiti:string>
+					</activiti:field>
+				</activiti:taskListener>
+				<activiti:taskListener event="complete" 
+					class="org.alfresco.repo.workflow.activiti.tasklistener.ScriptTaskListener">
+					<activiti:field name="script">
+						<activiti:string>
+							var newApprovedCount = wf_approveCount + 1;
+	                        var newApprovedPercentage = (newApprovedCount / wf_reviewerCount) * 100;
+	                        logger.log("newApprovedCount: "+newApprovedCount);
+							logger.log("newApprovedPercentage: "+newApprovedPercentage);
+	                        execution.setVariable('wf_approveCount', newApprovedCount);
+	                        execution.setVariable('wf_actualPercent', newApprovedPercentage);
+							logger.log("is complete: " + (wf_actualPercent >= wf_requiredPercent));
 						</activiti:string>
 					</activiti:field>
 				</activiti:taskListener>
@@ -94,7 +113,7 @@
 			<multiInstanceLoopCharacteristics isSequential="false">
            	   <loopDataInputRef>performUsers</loopDataInputRef>
            	   <inputDataItem name="reviewAssignee"/>
-           	   <completionCondition>${wf_actualPercent >= wf_requiredApprovePercent} </completionCondition>
+           	   <completionCondition>${wf_actualPercent >= wf_requiredPercent}</completionCondition>
             </multiInstanceLoopCharacteristics>
 		</userTask>
 		
@@ -114,6 +133,7 @@
 						<activiti:string>
 							if (typeof bpm_workflowDueDate != 'undefined') task.dueDate = bpm_workflowDueDate
 							if (typeof bpm_workflowPriority != 'undefined') task.priority = bpm_workflowPriority;
+							
 						</activiti:string>
 					</activiti:field>
 				</activiti:taskListener>
